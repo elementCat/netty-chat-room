@@ -31,7 +31,6 @@
           EventLoopGroup worker = new NioEventLoopGroup();
           String hostName ="192.168.11.15";
           int port =10001;
-          final HashedWheelTimer hashedWheelTimer = new HashedWheelTimer();
           try{
               //设置线程池
               bootstrap.group(worker)
@@ -40,9 +39,8 @@
               //设置管道工厂
               .handler(new ChannelInitializer<Channel>() {
                   @Override
-                  protected void initChannel(Channel ch) throws Exception {
+                  protected void initChannel(Channel ch) {
                       ch.pipeline().addLast(new StringDecoder())
-                              .addLast(new IdleStateHandler(5,5,10, TimeUnit.SECONDS))
                               .addLast(new StringEncoder())
                               .addLast(new ClientHandler());
                   }

@@ -10,6 +10,7 @@
   import io.netty.channel.socket.nio.NioServerSocketChannel;
   import io.netty.handler.codec.string.StringDecoder;
   import io.netty.handler.codec.string.StringEncoder;
+  import io.netty.handler.timeout.IdleStateHandler;
   import lombok.extern.slf4j.Slf4j;
 
   @Slf4j
@@ -38,10 +39,11 @@
                 .childHandler(new ChannelInitializer<Channel>() {
                   @Override
                   protected void initChannel(Channel ch) throws Exception {
-                      ch.pipeline().addLast(new StringDecoder())
-                              .addLast(new StringEncoder())
-                              .addLast(new ServerHandler()
-                              );
+                      ch.pipeline().addLast(new IdleStateHandler(5,5,10))
+                       .addLast(new ServerHandler())
+                       .addLast(new ServerTrigger())
+                       .addLast(new StringDecoder())
+                       .addLast(new StringEncoder());
                   }
               });
               //绑定端口
