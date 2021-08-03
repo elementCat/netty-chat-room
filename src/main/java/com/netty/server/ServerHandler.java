@@ -24,22 +24,20 @@
           if(evt instanceof IdleStateEvent){
              IdleStateEvent event = (IdleStateEvent) evt;
              if(event.state()==IdleState.ALL_IDLE){
-             //    ChannelFuture future = ctx.writeAndFlush("长时间无操作，会话断开！");
-             //    future.addListener((ChannelFutureListener) future1 -> ctx.channel().close());
-                 System.out.println("长时间无操作，会话断开！--ALL_IDLE");
-                 ctx.close();
-             }else if (event.state().equals(IdleState.WRITER_IDLE)) {
+                 ChannelFuture future = ctx.writeAndFlush("长时间无操作，会话断开！");
+                 future.addListener((ChannelFutureListener) future1 -> ctx.channel().close());
+             }
+             else if (event.state().equals(IdleState.WRITER_IDLE)) {
                  System.out.println("WRITER_IDLE");
              } else if (event.state().equals(IdleState.READER_IDLE)) {
                  System.out.println("READER_IDLE");
-                 // 发送心跳
-                 ctx.channel().write("ping\n");
              }
+              super.userEventTriggered(ctx, evt);
           }else {
               super.userEventTriggered(ctx, evt);
           }
       }
-//
+
 
 
       @Override

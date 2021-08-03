@@ -39,11 +39,12 @@
                 .childHandler(new ChannelInitializer<Channel>() {
                   @Override
                   protected void initChannel(Channel ch) throws Exception {
-                      ch.pipeline().addLast(new IdleStateHandler(5,5,10))
-                       .addLast(new ServerHandler())
-                       .addLast(new ServerTrigger())
+                      ch.pipeline()
+                      .addLast(new IdleStateHandler(5,5,30))
+                //       .addLast(new ServerTrigger())
                        .addLast(new StringDecoder())
-                       .addLast(new StringEncoder());
+                       .addLast(new StringEncoder())
+                       .addLast(new ServerHandler());
                   }
               });
               //绑定端口

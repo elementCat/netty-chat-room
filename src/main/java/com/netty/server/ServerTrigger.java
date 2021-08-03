@@ -10,7 +10,7 @@
   import lombok.extern.slf4j.Slf4j;
 
   @Slf4j
-  public class ServerTrigger extends ChannelHandlerAdapter {
+  public class ServerTrigger extends ChannelInboundHandlerAdapter {
 
 
       @Override
